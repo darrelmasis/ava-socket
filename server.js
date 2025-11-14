@@ -3,7 +3,7 @@
 
 import { Server } from 'socket.io'
 import { createServer } from 'http'
-import { getCorsHeaders } from '../utils/cors.js'
+import { getCorsHeaders } from 'cors.js'
 
 const PORT = process.env.CHAT_PORT || 8080
 
