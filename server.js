@@ -68,7 +68,7 @@ io.on('connection', socket => {
 
   // Cuando un usuario se une
   socket.on('user:join', userData => {
-    console.log(`👤 Usuario ${userData.userName} se unió al chat`)
+    console.log(`👤 Usuario ${userData.userName} se unió al chat`, userData)
     socket.userData = userData
     // Guardar usuario conectado
     connectedUsers.set(socket.id, {
@@ -77,12 +77,14 @@ io.on('connection', socket => {
       fullName: userData.fullName,
       socketId: socket.id,
     })
+    console.log(`📋 Total de usuarios conectados: ${connectedUsers.size}`)
+    console.log(`📋 Lista de usuarios:`, Array.from(connectedUsers.values()))
     // Notificar a otros usuarios
     socket.broadcast.emit('user:joined', {
       userName: userData.userName,
       message: `${userData.userName} se unió al chat`,
     })
-    // Enviar lista actualizada a todos
+    // Enviar lista actualizada a todos (incluyendo al que se acaba de conectar)
     emitUsersList()
   })
 
