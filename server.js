@@ -17,6 +17,10 @@ io.on('connection', socket => {
     socket.userData = userData
   })
 
+  socket.on('user:left', userData => {
+    socket.userData = userData
+  })
+
   socket.on('message:send', messageData => {
     const msg = {
       id: Date.now().toString(),
