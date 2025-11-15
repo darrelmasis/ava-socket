@@ -113,26 +113,30 @@ io.on('connection', socket => {
   // Cuando un usuario empieza a escribir
   socket.on('typing:start', () => {
     if (socket.userData) {
-      // Notificar a todos excepto al que está escribiendo
-      socket.broadcast.emit('typing:status', {
+      const typingData = {
         userId: socket.userData.id,
         userName: socket.userData.userName,
         fullName: socket.userData.fullName,
         isTyping: true,
-      })
+      }
+      console.log('⌨️ Usuario escribiendo:', typingData)
+      // Notificar a todos excepto al que está escribiendo
+      socket.broadcast.emit('typing:status', typingData)
     }
   })
 
   // Cuando un usuario deja de escribir
   socket.on('typing:stop', () => {
     if (socket.userData) {
-      // Notificar a todos excepto al que dejó de escribir
-      socket.broadcast.emit('typing:status', {
+      const typingData = {
         userId: socket.userData.id,
         userName: socket.userData.userName,
         fullName: socket.userData.fullName,
         isTyping: false,
-      })
+      }
+      console.log('⌨️ Usuario dejó de escribir:', typingData)
+      // Notificar a todos excepto al que dejó de escribir
+      socket.broadcast.emit('typing:status', typingData)
     }
   })
 
