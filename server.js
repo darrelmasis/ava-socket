@@ -3,9 +3,9 @@
 
 import { Server } from 'socket.io'
 import { createServer } from 'http'
-import { getCorsHeaders } from './cors.js'
+import { getCorsHeaders } from '../_utils/cors.js'
 
-const PORT = process.env.CHAT_PORT || 8000
+const PORT = process.env.CHAT_PORT || 8080
 
 // Crear servidor HTTP
 const server = createServer((req, res) => {
@@ -110,6 +110,32 @@ io.on('connection', socket => {
     console.log(`💬 ${message.user}: ${message.text}`)
   })
 
+  // Cuando un usuario empieza a escribir
+  socket.on('typing:start', () => {
+    if (socket.userData) {
+      // Notificar a todos excepto al que está escribiendo
+      socket.broadcast.emit('typing:status', {
+        userId: socket.userData.id,
+        userName: socket.userData.userName,
+        fullName: socket.userData.fullName,
+        isTyping: true,
+      })
+    }
+  })
+
+  // Cuando un usuario deja de escribir
+  socket.on('typing:stop', () => {
+    if (socket.userData) {
+      // Notificar a todos excepto al que dejó de escribir
+      socket.broadcast.emit('typing:status', {
+        userId: socket.userData.id,
+        userName: socket.userData.userName,
+        fullName: socket.userData.fullName,
+        isTyping: false,
+      })
+    }
+  })
+
   // Cuando un usuario se desconecta
   socket.on('disconnect', () => {
     console.log('❌ Cliente desconectado:', socket.id)
@@ -140,3 +166,4 @@ process.on('SIGTERM', () => {
     })
   })
 })
+
