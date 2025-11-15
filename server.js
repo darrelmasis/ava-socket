@@ -5,7 +5,7 @@ import { Server } from 'socket.io'
 import { createServer } from 'http'
 import { getCorsHeaders } from './cors.js'
 
-const PORT = process.env.CHAT_PORT || 8080
+const PORT = process.env.CHAT_PORT || 8000
 
 // Crear servidor HTTP
 const server = createServer((req, res) => {
