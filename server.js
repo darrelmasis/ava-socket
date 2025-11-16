@@ -4,6 +4,7 @@
 import { Server } from 'socket.io'
 import { createServer } from 'http'
 import { getCorsHeaders } from './cors.js'
+import { MAX_MESSAGES_DISPLAY } from './config.js'
 
 const PORT = process.env.CHAT_PORT || 8000
 
@@ -58,9 +59,9 @@ const emitUsersList = () => {
 io.on('connection', socket => {
   console.log('✅ Cliente conectado:', socket.id)
 
-  // Enviar historial al nuevo cliente
+  // Enviar historial al nuevo cliente (últimos MAX_MESSAGES_DISPLAY mensajes)
   if (messages.length > 0) {
-    socket.emit('message:history', messages.slice(-50))
+    socket.emit('message:history', messages.slice(-MAX_MESSAGES_DISPLAY))
   }
 
   // Enviar lista de usuarios conectados
@@ -98,9 +99,9 @@ io.on('connection', socket => {
       timestamp: new Date().toISOString(),
     }
 
-    // Guardar mensaje (máximo 6 en memoria)
+    // Guardar mensaje (máximo MAX_MESSAGES_DISPLAY en memoria)
     messages.push(message)
-    if (messages.length > 6) {
+    if (messages.length > MAX_MESSAGES_DISPLAY) {
       messages.shift()
     }
 
