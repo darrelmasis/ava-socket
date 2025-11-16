@@ -98,9 +98,9 @@ io.on('connection', socket => {
       timestamp: new Date().toISOString(),
     }
 
-    // Guardar mensaje (máximo 100)
+    // Guardar mensaje (máximo 6 en memoria)
     messages.push(message)
-    if (messages.length > 100) {
+    if (messages.length > 6) {
       messages.shift()
     }
 
@@ -170,4 +170,3 @@ process.on('SIGTERM', () => {
     })
   })
 })
-
