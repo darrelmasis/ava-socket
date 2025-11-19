@@ -57,7 +57,7 @@ const emitUsersList = () => {
 }
 
 io.on('connection', socket => {
-  console.log('✅ Cliente conectado:', socket.id)
+  // console.log('✅ Cliente conectado:', socket.id)
 
   // Enviar historial al nuevo cliente (últimos MAX_MESSAGES_DISPLAY mensajes)
   if (messages.length > 0) {
@@ -69,7 +69,7 @@ io.on('connection', socket => {
 
   // Cuando un usuario se une
   socket.on('user:join', userData => {
-    console.log(`👤 Usuario ${userData.userName} se unió al chat`, userData)
+    // console.log(`👤 Usuario ${userData.userName} se unió al chat`, userData)
     socket.userData = userData
     // Guardar usuario conectado
     connectedUsers.set(socket.id, {
@@ -78,8 +78,8 @@ io.on('connection', socket => {
       fullName: userData.fullName,
       socketId: socket.id,
     })
-    console.log(`📋 Total de usuarios conectados: ${connectedUsers.size}`)
-    console.log(`📋 Lista de usuarios:`, Array.from(connectedUsers.values()))
+    // console.log(`📋 Total de usuarios conectados: ${connectedUsers.size}`)
+    // console.log(`📋 Lista de usuarios:`, Array.from(connectedUsers.values()))
     // Notificar a otros usuarios
     socket.broadcast.emit('user:joined', {
       userName: userData.userName,
@@ -108,7 +108,7 @@ io.on('connection', socket => {
     // Enviar a todos los clientes
     io.emit('message:new', message)
 
-    console.log(`💬 ${message.user}: ${message.text}`)
+    // console.log(`💬 ${message.user}: ${message.text}`)
   })
 
   // Cuando un usuario empieza a escribir
@@ -120,7 +120,7 @@ io.on('connection', socket => {
         fullName: socket.userData.fullName,
         isTyping: true,
       }
-      console.log('⌨️ Usuario escribiendo:', typingData)
+      // console.log('⌨️ Usuario escribiendo:', typingData)
       // Notificar a todos excepto al que está escribiendo
       socket.broadcast.emit('typing:status', typingData)
     }
@@ -135,7 +135,7 @@ io.on('connection', socket => {
         fullName: socket.userData.fullName,
         isTyping: false,
       }
-      console.log('⌨️ Usuario dejó de escribir:', typingData)
+      // console.log('⌨️ Usuario dejó de escribir:', typingData)
       // Notificar a todos excepto al que dejó de escribir
       socket.broadcast.emit('typing:status', typingData)
     }
@@ -143,7 +143,7 @@ io.on('connection', socket => {
 
   // Cuando un usuario se desconecta
   socket.on('disconnect', () => {
-    console.log('❌ Cliente desconectado:', socket.id)
+    // console.log('❌ Cliente desconectado:', socket.id)
     if (socket.userData) {
       // Remover usuario de la lista
       connectedUsers.delete(socket.id)
